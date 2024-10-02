@@ -1786,6 +1786,10 @@
     <string name="cli_help_svg_ieee">Use the IEEE symbols.</string>
     <string name="cli_errorCreatingSVG">Error while creating the SVG file!</string>
 
+    <string name="cli_help_verilog">Can be used to create an SVG file from a circuit.</string>
+    <string name="cli_help_verilog_dig">The file name of the circuit.</string>
+    <string name="cli_errorCreatingVerilog">Error while creating the Verilog HDL!</string>
+
     <string name="cli_help_stats">Creates a CSV file which contains the circuit statistics.
         All components used are listed in the CSV file.
     </string>
