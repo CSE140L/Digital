@@ -25,6 +25,7 @@ import java.nio.file.Paths;
  */
 public class VerilogExport extends BasicCommand {
     private final Argument<String> digFile;
+    private final Argument<String> verilogFile;
 
     /**
      * Creates the SVG export command
@@ -33,22 +34,18 @@ public class VerilogExport extends BasicCommand {
         super("verilog");
 
         digFile = addArgument(new Argument<>("dig", "", false));
+        verilogFile = addArgument(new Argument<>("verilog", "", false));
     }
 
     @Override
     protected void execute() throws CLIException {
         try {
-
             ElementLibrary library = new ElementLibrary(Settings.getInstance().get(Keys.SETTINGS_JAR_PATH));
-            Exception e = library.checkForException();
-
             Circuit circuit = new CircuitLoader(digFile.get(), true).getCircuit();
-
-            final CodePrinter verilogPrinter = new CodePrinter(Files.newOutputStream(Paths.get(digFile.get() + ".v")));
+            final CodePrinter verilogPrinter = new CodePrinter(Files.newOutputStream(Paths.get(verilogFile.get())));
             try (VerilogGenerator vlog = new VerilogGenerator(library, verilogPrinter)) {
                 vlog.export(circuit);
             }
-
         } catch (IOException e) {
             throw new CLIException(Lang.get("cli_errorCreatingVerilog"), e);
         }

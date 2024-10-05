@@ -1788,6 +1788,7 @@
 
     <string name="cli_help_verilog">Can be used to create an SVG file from a circuit.</string>
     <string name="cli_help_verilog_dig">The file name of the circuit.</string>
+    <string name="cli_help_verilog_verilog">The file name of the verilog to save to.</string>
     <string name="cli_errorCreatingVerilog">Error while creating the Verilog HDL!</string>
 
     <string name="cli_help_stats">Creates a CSV file which contains the circuit statistics.
