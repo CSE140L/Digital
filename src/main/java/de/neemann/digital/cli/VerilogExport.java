@@ -8,10 +8,7 @@ package de.neemann.digital.cli;
 import de.neemann.digital.cli.cli.Argument;
 import de.neemann.digital.cli.cli.BasicCommand;
 import de.neemann.digital.cli.cli.CLIException;
-import de.neemann.digital.core.element.Keys;
-import de.neemann.digital.draw.elements.Circuit;
 import de.neemann.digital.draw.library.ElementLibrary;
-import de.neemann.digital.gui.Settings;
 import de.neemann.digital.hdl.printer.CodePrinter;
 import de.neemann.digital.hdl.verilog2.VerilogGenerator;
 import de.neemann.digital.lang.Lang;
@@ -40,11 +37,11 @@ public class VerilogExport extends BasicCommand {
     @Override
     protected void execute() throws CLIException {
         try {
-            ElementLibrary library = new ElementLibrary(Settings.getInstance().get(Keys.SETTINGS_JAR_PATH));
-            Circuit circuit = new CircuitLoader(digFile.get(), true).getCircuit();
+            CircuitLoader circuitLoader = new CircuitLoader(digFile.get(), true);
+            ElementLibrary library = circuitLoader.getLibrary();
             final CodePrinter verilogPrinter = new CodePrinter(Files.newOutputStream(Paths.get(verilogFile.get())));
             try (VerilogGenerator vlog = new VerilogGenerator(library, verilogPrinter)) {
-                vlog.export(circuit);
+                vlog.export(circuitLoader.getCircuit());
             }
         } catch (IOException e) {
             throw new CLIException(Lang.get("cli_errorCreatingVerilog"), e);
