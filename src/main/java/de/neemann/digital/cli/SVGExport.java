@@ -49,13 +49,13 @@ public class SVGExport extends BasicCommand {
         try {
             Circuit circuit = new CircuitLoader(digFile.get(), ieeeShapes.get()).getCircuit();
 
-            String outName;
-            if (svgFile.isSet())
-                outName = svgFile.get();
-            else
-                outName = digFile.get() + ".svg";
+            Export svgFileExporter = new Export(circuit, o -> new GraphicSVG(o, attr));
 
-            new Export(circuit, o -> new GraphicSVG(o, attr)).export(new File(outName));
+            if (svgFile.isSet())
+                svgFileExporter.export(new File(svgFile.get()));
+            else
+                svgFileExporter.export(System.out);
+
         } catch (IOException e) {
             throw new CLIException(Lang.get("cli_errorCreatingSVG"), e);
         }
