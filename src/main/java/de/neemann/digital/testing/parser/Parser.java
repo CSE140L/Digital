@@ -9,10 +9,7 @@ import de.neemann.digital.core.*;
 import de.neemann.digital.core.memory.DataField;
 import de.neemann.digital.lang.Lang;
 import de.neemann.digital.data.Value;
-import de.neemann.digital.testing.parser.functions.Function;
-import de.neemann.digital.testing.parser.functions.IfThenElse;
-import de.neemann.digital.testing.parser.functions.Random;
-import de.neemann.digital.testing.parser.functions.SignExtend;
+import de.neemann.digital.testing.parser.functions.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +35,7 @@ public class Parser {
     private final Tokenizer tok;
     private final HashMap<String, Function> functions = new HashMap<>();
     private final Random random;
+    private final RandomSigned randomSigned;
     private LineEmitter emitter;
 
     /**
@@ -49,6 +47,9 @@ public class Parser {
         functions.put("signExt", new SignExtend());
         random = new Random();
         functions.put("random", random);
+        randomSigned = new RandomSigned();
+        functions.put("randomSigned", randomSigned);
+        functions.put("get2421", new Get2421());
         functions.put("ite", new IfThenElse());
         names = new ArrayList<>();
         virtualSignals = new ArrayList<>();
@@ -314,6 +315,13 @@ public class Parser {
      */
     public Random getRandom() {
         return random;
+    }
+
+    /**
+     * @return the signed random function
+     */
+    public RandomSigned getRandomSigned() {
+        return randomSigned;
     }
 
     /**
