@@ -14,7 +14,10 @@ import de.neemann.digital.core.stats.Statistics;
 import de.neemann.digital.draw.elements.PinException;
 import de.neemann.digital.draw.library.ElementNotFoundException;
 import de.neemann.digital.lang.Lang;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import javax.swing.table.TableModel;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +29,7 @@ import java.io.OutputStreamWriter;
 public class StatsExport extends BasicCommand {
     private final Argument<String> digFile;
     private final Argument<String> csvFile;
+    private final Argument<String> jsonOutputFile;
 
     /**
      * Creates the stats export command
@@ -34,6 +38,7 @@ public class StatsExport extends BasicCommand {
         super("stats");
         digFile = addArgument(new Argument<>("dig", "", false));
         csvFile = addArgument(new Argument<>("csv", "", true));
+        jsonOutputFile = addArgument(new Argument<>("json-output", "", true));
     }
 
     @Override
@@ -41,15 +46,43 @@ public class StatsExport extends BasicCommand {
         try {
             Model model = new CircuitLoader(digFile.get()).createModel();
             Statistics stats = new Statistics(model);
+            TableModel tableModel = stats.getTableModel();
 
-            BufferedWriter writer;
-            if (csvFile.isSet())
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile.get())));
-            else
-                writer = new BufferedWriter(new OutputStreamWriter(System.out));
+            if (jsonOutputFile.isSet()) {
+                BufferedWriter writer;
+                if (!jsonOutputFile.get().isEmpty())
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(jsonOutputFile.get())));
+                else
+                    writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
-            new CSVWriter(stats.getTableModel()).writeTo(writer);
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    int rowCount = tableModel.getRowCount();
+                    String[] keys = new String[]{"part", "inputs", "bits", "addrBits", "number"};
 
+                    for (int row = 0; row < rowCount; row++) {
+                        JSONObject jsonObject = new JSONObject();
+                        for (int col = 0; col < keys.length; col++) {
+                            Object value = tableModel.getValueAt(row, col);
+                            if (value != null) {
+                                jsonObject.put(keys[col], value);
+                            }
+                        }
+                        jsonArray.put(jsonObject);
+                    }
+                    writer.write(jsonArray.toString());
+                } finally {
+                    writer.close();
+                }
+            } else {
+                BufferedWriter writer;
+                if (csvFile.isSet() && !csvFile.get().isEmpty())
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile.get())));
+                else
+                    writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
+                new CSVWriter(stats.getTableModel()).writeTo(writer);
+            }
         } catch (IOException | ElementNotFoundException | PinException | NodeException e) {
             throw new CLIException(Lang.get("cli_errorCreatingStats"), e);
         }

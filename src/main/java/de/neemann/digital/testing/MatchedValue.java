@@ -32,8 +32,15 @@ public class MatchedValue extends Value {
     /**
      * @return true if test is passed
      */
-    boolean isPassed() {
+    public boolean isPassed() {
         return isEqualTo(expected, mask);
+    }
+
+    /**
+     * @return the expected value
+     */
+    public Value getExpected() {
+        return expected;
     }
 
     @Override
