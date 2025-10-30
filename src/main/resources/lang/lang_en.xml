@@ -1777,6 +1777,7 @@
         depend on different inputs.
     </string>
     <string name="cli_help_test_verbose">If set, the value table is output in case of an error.</string>
+    <string name="cli_help_test_json-output">Path to a JSON file that contains the test results for this file.</string>
     <string name="cli_thereAreTestFailures">Tests have failed.</string>
     <string name="cli_errorExecutingTests">An error has occurred during the execution of the tests.</string>
 
@@ -1798,7 +1799,16 @@
     <string name="cli_help_stats_csv">Name of the CSV file to be created.
         If this option is missing, the table is written to stdout.
     </string>
+    <string name="cli_help_stats_json-output">Path to a JSON file that contains the stats for this file.</string>
     <string name="cli_errorCreatingStats">Error while creating the stats file!</string>
+
+    <string name="cli_help_upload-report">Uploads test, stats, and circuit image reports to a server.</string>
+    <string name="cli_help_upload-report_url">The full URL of the server where the reports will be uploaded.</string>
+    <string name="cli_help_upload-report_student-id">Your student ID.</string>
+    <string name="cli_help_upload-report_lab-number">The lab number you are submitting for.</string>
+    <string name="cli_help_upload-report_test-report">The file path to the JSON test report you want to upload.</string>
+    <string name="cli_help_upload-report_stats-report">The file path to the JSON statistics report you want to upload.</string>
+    <string name="cli_help_upload-report_dig-file">Thee file path to the circuit .dig file, used to generate and upload an SVG image of your circuit.</string>
 
     <string name="cli_run_noClock">No running clock found in circuit!</string>
     <string name="cli_errorRunningCircuit">Error running the circuit!</string>

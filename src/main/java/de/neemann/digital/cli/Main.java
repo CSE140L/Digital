@@ -22,6 +22,7 @@ public class Main extends Muxer {
         addCommand(new StatsExport());
         addCommand(new VerilogExport());
         addCommand(new Runner());
+        addCommand(new UploadReport());
     }
 
     /**
